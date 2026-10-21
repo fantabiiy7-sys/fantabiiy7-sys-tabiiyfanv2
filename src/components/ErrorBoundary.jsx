@@ -29,11 +29,14 @@ export class ErrorBoundary extends Component {
           <h1>Sahifani ochishda xatolik / Ошибка / Error</h1>
           <p>Sahifani yangilang. Agar Chrome tarjimoni (Google Translate) yoqilgan bo‘lsa, uni o‘chiring — saytda o‘z til tanlagichi bor.</p>
           <code>{String(this.state.error?.message || this.state.error)}</code>
-          <pre className="crash-stack">
+          <details>
+            <summary className="muted small">Texnik ma’lumot</summary>
+            <pre className="crash-stack">
             {String(this.state.error?.stack || '').split('\n').slice(0, 8).join('\n')}
             {'\n--- component ---'}
             {String(this.state.info?.componentStack || '').split('\n').slice(0, 8).join('\n')}
           </pre>
+          </details>
           <div className="crash-actions">
             <button className="btn btn-primary" onClick={() => window.location.reload()}>
               Sahifani yangilash

@@ -12,7 +12,9 @@ export default function AdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const [open, setOpen] = useState(false);
-  useEffect(() => setOpen(false), [location.pathname]);
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname]);
 
   const links = [
     { to: '/admin', end: true, icon: LayoutDashboard, label: t('admin.dashboard') },

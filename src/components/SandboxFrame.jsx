@@ -10,7 +10,9 @@ export const SandboxFrame = forwardRef(function SandboxFrame({ html, css, js, ti
   const doc = useMemo(() => buildAnimationDoc({ html, css, js }), [html, css, js]);
   const [key, setKey] = useState(0);
 
-  useEffect(() => setKey((k) => k + 1), [doc, runKey]);
+  useEffect(() => {
+    setKey((k) => k + 1);
+  }, [doc, runKey]);
 
   useEffect(() => {
     if (!onError) return;

@@ -63,7 +63,9 @@ function MaterialsDropdown() {
   const location = useLocation();
   const active = MATERIAL_SECTIONS.some((s) => location.pathname.startsWith(s.path)) || location.pathname.startsWith('/material/');
 
-  useEffect(() => setOpen(false), [location.pathname]);
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname]);
   useEffect(() => {
     const onDoc = (e) => ref.current && !ref.current.contains(e.target) && setOpen(false);
     const onKey = (e) => e.key === 'Escape' && setOpen(false);
@@ -105,7 +107,9 @@ function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
-  useEffect(() => setMobileOpen(false), [location.pathname]);
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : '';
   }, [mobileOpen]);
@@ -246,7 +250,9 @@ function Footer() {
 
 export function PublicLayout() {
   const { pathname } = useLocation();
-  useEffect(() => window.scrollTo(0, 0), [pathname]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   return (
     <div className="app-shell">
       <Header />

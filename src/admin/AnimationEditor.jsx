@@ -118,7 +118,9 @@ export default function AnimationEditor() {
   const debounced = useDebounced(code, 600);
   const previewCode = auto ? debounced : manual;
 
-  useEffect(() => setPreviewError(''), [previewCode, runKey]);
+  useEffect(() => {
+    setPreviewError('');
+  }, [previewCode, runKey]);
 
   async function applyTemplate(tplId) {
     try {

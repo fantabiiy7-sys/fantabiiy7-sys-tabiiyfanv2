@@ -2674,7 +2674,7 @@ select:disabled {
 .crash-stack {
   max-height: 260px;
   overflow: auto;
-  margin: -6px 0 18px;
+  margin: 8px 0 18px;
   padding: 10px 12px;
   border-radius: 10px;
   background: var(--bg-soft);
