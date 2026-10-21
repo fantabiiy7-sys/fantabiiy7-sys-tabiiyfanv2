@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, MonitorPlay, Upload, Link2, Trash2 } from 'lucide-react';
 import { useI18n } from '../context/I18nContext';
 import { useToast } from '../context/ToastContext';
+import { useConfirm } from '../components/ConfirmDialog';
 import { useTopics } from '../lib/hooks';
 import { deleteItem, getItem, saveItem } from '../lib/api';
 import { removeFiles } from '../lib/storage';
@@ -33,6 +34,7 @@ export default function MaterialForm() {
   const def = MATERIAL_TYPES[type];
   const { t } = useI18n();
   const toast = useToast();
+  const confirm = useConfirm();
   const navigate = useNavigate();
   const { topics } = useTopics();
   const [form, setForm] = useState({ ...EMPTY, type });
@@ -108,7 +110,7 @@ export default function MaterialForm() {
   }
 
   async function remove() {
-    if (!window.confirm(t('admin.confirmDelete'))) return;
+    if (!(await confirm({ text: t('admin.confirmDelete') }))) return;
     try {
       await deleteItem('materials', original);
       toast(t('admin.deleted'));

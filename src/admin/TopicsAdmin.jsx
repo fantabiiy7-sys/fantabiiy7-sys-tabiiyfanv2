@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Plus, Pencil, Trash2, Check, X, BookMarked, Info, Languages } from 'lucide-react';
 import { useI18n } from '../context/I18nContext';
 import { useToast } from '../context/ToastContext';
+import { useConfirm } from '../components/ConfirmDialog';
 import { useTopics } from '../lib/hooks';
 import { deleteTopic, saveTopic } from '../lib/api';
 import { GRADES } from '../lib/constants';
@@ -69,6 +70,7 @@ function TopicEditor({ initial, onSave, onCancel }) {
 export default function TopicsAdmin() {
   const { t } = useI18n();
   const toast = useToast();
+  const confirm = useConfirm();
   const { topics, loading, reload } = useTopics();
   const [grade, setGrade] = useState(5);
   const [editing, setEditing] = useState(null); // topic id | 'new'
@@ -94,7 +96,7 @@ export default function TopicsAdmin() {
   }
 
   async function remove(topic) {
-    if (!window.confirm(`${t('admin.confirmDelete')}\n\n${t('admin.topicDeleteNote')}`)) return;
+    if (!(await confirm({ text: t('admin.confirmDelete'), note: t('admin.topicDeleteNote') }))) return;
     try {
       await deleteTopic(topic.id);
       toast(t('admin.deleted'));

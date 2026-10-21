@@ -10,6 +10,7 @@ import ListPage from './pages/ListPage';
 import MaterialDetail from './pages/MaterialDetail';
 import AnimationView from './pages/AnimationView';
 import TestView from './pages/TestView';
+import TestsCatalog from './pages/TestsCatalog';
 import GradePage from './pages/GradePage';
 import TopicPage from './pages/TopicPage';
 import About from './pages/About';
@@ -53,7 +54,7 @@ export default function App() {
             <Route path="library" element={<ListPage key="library" sectionKey="library" />} />
             <Route path="animations" element={<ListPage key="animation" sectionKey="animation" />} />
             <Route path="animations/:id" element={<AnimationView />} />
-            <Route path="tests" element={<ListPage key="test" sectionKey="test" />} />
+            <Route path="tests" element={<TestsCatalog />} />
             <Route path="tests/:id" element={<TestView />} />
             <Route path="material/:id" element={<MaterialDetail />} />
             <Route path="grade/:grade" element={<GradePage />} />

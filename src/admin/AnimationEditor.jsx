@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { useI18n } from '../context/I18nContext';
 import { useToast } from '../context/ToastContext';
+import { useConfirm } from '../components/ConfirmDialog';
 import { useDebounced, useTopics } from '../lib/hooks';
 import { deleteItem, getItem, listItems, saveItem } from '../lib/api';
 import { removeFiles } from '../lib/storage';
@@ -66,6 +67,7 @@ export default function AnimationEditor() {
   const isNew = !id || id === 'new';
   const { t } = useI18n();
   const toast = useToast();
+  const confirm = useConfirm();
   const navigate = useNavigate();
   const { topics } = useTopics();
   const [form, setForm] = useState(EMPTY);
@@ -186,7 +188,7 @@ export default function AnimationEditor() {
   saveRef.current = () => save(form.status || 'draft', { stay: true });
 
   async function remove() {
-    if (!window.confirm(t('admin.confirmDelete'))) return;
+    if (!(await confirm({ text: t('admin.confirmDelete') }))) return;
     try {
       await deleteItem('animations', original);
       setDirty(false);

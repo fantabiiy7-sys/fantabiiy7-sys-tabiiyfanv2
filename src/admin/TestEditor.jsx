@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Plus, Trash2, CheckCircle2, Circle, ChevronUp, ChevronDown, ClipboardCheck } from 'lucide-react';
+import { ArrowLeft, Plus, Trash2, CheckCircle2, Circle, ChevronUp, ChevronDown, ClipboardCheck, FileText, Paperclip, ListChecks, Languages, AlertCircle } from 'lucide-react';
 import { useI18n } from '../context/I18nContext';
 import { useToast } from '../context/ToastContext';
+import { useConfirm } from '../components/ConfirmDialog';
 import { useTopics } from '../lib/hooks';
 import { deleteItem, getItem, saveItem } from '../lib/api';
 import { removeFiles } from '../lib/storage';
@@ -30,6 +31,7 @@ export default function TestEditor() {
   const isNew = !id || id === 'new';
   const { t } = useI18n();
   const toast = useToast();
+  const confirm = useConfirm();
   const navigate = useNavigate();
   const { topics } = useTopics();
   const [form, setForm] = useState(EMPTY);
@@ -115,7 +117,7 @@ export default function TestEditor() {
   }
 
   async function remove() {
-    if (!window.confirm(t('admin.confirmDelete'))) return;
+    if (!(await confirm({ text: t('admin.confirmDelete') }))) return;
     try {
       await deleteItem('tests', original);
       toast(t('admin.deleted'));
@@ -135,12 +137,16 @@ export default function TestEditor() {
           <span className="page-icon tone-indigo">
             <ClipboardCheck size={24} />
           </span>
-          <h1>{isNew ? t('admin.addNew') : t('admin.edit')}</h1>
+          <div>
+            <h1>{isNew ? t('admin.addNew') : t('admin.edit')}</h1>
+            <p className="muted small">{t('nav.test')}</p>
+          </div>
           {!isNew && <StatusBadge status={form.status} />}
         </div>
       </div>
 
-      <div className="card form-card">
+      <div className="card form-card form-section">
+        <SectionHead icon={FileText} n={1} title={t('admin.sectionBasic')} hint={t('admin.sectionBasicHint')} />
         <Field label={t('admin.title')} required error={errors.title}>
           <input value={form.title} onChange={(e) => set({ title: e.target.value })} maxLength={300} />
         </Field>
@@ -148,6 +154,10 @@ export default function TestEditor() {
         <Field label={t('admin.descriptionField')}>
           <textarea rows={3} value={form.description || ''} onChange={(e) => set({ description: e.target.value })} />
         </Field>
+      </div>
+
+      <div className="card form-card form-section">
+        <SectionHead icon={Paperclip} n={2} title={t('admin.sectionFile')} hint={t('admin.sectionFileHint')} />
         <FileField
           label={t('admin.attachmentOptional')}
           accept=".pdf,.doc,.docx,.odt,.ppt,.pptx,.xls,.xlsx,image/*"
@@ -159,15 +169,31 @@ export default function TestEditor() {
         />
       </div>
 
-      <div className="questions-head">
-        <h2 className="sub-title">
-          {t('admin.questions')} <span className="count">{form.questions.length}</span>
-        </h2>
-      </div>
-      {errors.questions && <p className="field-error">{errors.questions}</p>}
+      <div className="card form-card form-section questions-section">
+        <SectionHead
+          icon={ListChecks}
+          n={3}
+          title={
+            <>
+              {t('admin.sectionQuestions')} <span className="count">{form.questions.length}</span>
+            </>
+          }
+          hint={t('admin.sectionQuestionsHint')}
+        />
+        {errors.questions && (
+          <p className="form-alert" role="alert">
+            <AlertCircle size={18} /> {errors.questions}
+          </p>
+        )}
+        {form.questions.length === 0 && (
+          <div className="empty compact">
+            <h3>{t('admin.noQuestionsYet')}</h3>
+            <p className="muted">{t('admin.noQuestionsYetText')}</p>
+          </div>
+        )}
 
       {form.questions.map((q, i) => (
-        <div key={i} className="card question-card">
+        <div key={i} className="question-card">
           <div className="question-top">
             <span className="q-num">{i + 1}</span>
             <textarea
@@ -195,7 +221,13 @@ export default function TestEditor() {
           <div className="options-list">
             {q.options.map((opt, oi) => (
               <div key={oi} className={`option-row ${q.correct === oi ? 'correct' : ''}`}>
-                <button className="icon-btn sm" title={t('admin.markCorrect')} onClick={() => setQ(i, { correct: oi })}>
+                <button
+                  className="icon-btn sm"
+                  title={t('admin.markCorrect')}
+                  aria-label={t('admin.markCorrect')}
+                  aria-pressed={q.correct === oi}
+                  onClick={() => setQ(i, { correct: oi })}
+                >
                   {q.correct === oi ? <CheckCircle2 size={18} className="text-green" /> : <Circle size={18} />}
                 </button>
                 <span className="opt-letter">{String.fromCharCode(65 + oi)}</span>
@@ -204,6 +236,7 @@ export default function TestEditor() {
                   placeholder={`${t('admin.option')} ${String.fromCharCode(65 + oi)}`}
                   onChange={(e) => setQ(i, { options: q.options.map((o, j) => (j === oi ? e.target.value : o)) })}
                 />
+                {q.correct === oi && <span className="correct-tag">{t('admin.correctLabel')}</span>}
                 {q.options.length > 2 && (
                   <button
                     className="icon-btn sm"
@@ -237,8 +270,10 @@ export default function TestEditor() {
       <button className="btn btn-outline btn-block add-question" onClick={() => set({ questions: [...form.questions, newQuestion()] })}>
         <Plus size={18} /> {t('admin.addQuestion')}
       </button>
+      </div>
 
-      <div className="card form-card">
+      <div className="card form-card form-section">
+        <SectionHead icon={Languages} n={4} title={t('admin.sectionTranslations')} />
         <TranslationFields value={form.translations} onChange={(translations) => set({ translations })} />
       </div>
 
@@ -255,6 +290,20 @@ export default function TestEditor() {
           )
         }
       />
+    </div>
+  );
+}
+
+function SectionHead({ icon: Icon, n, title, hint }) {
+  return (
+    <div className="section-head-row">
+      <span className="section-num" aria-hidden="true">
+        {Icon ? <Icon size={18} /> : n}
+      </span>
+      <div>
+        <h2 className="section-title">{title}</h2>
+        {hint && <p className="muted small">{hint}</p>}
+      </div>
     </div>
   );
 }
