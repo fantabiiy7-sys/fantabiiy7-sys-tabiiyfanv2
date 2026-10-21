@@ -156,6 +156,12 @@ const uz = {
     contact: 'Bog‘lanish',
   },
 
+  feedback: {
+    title: 'Taklif va shikoyatlar',
+    text: 'Platforma haqida fikr, taklif yoki shikoyatingiz bo‘lsa, Telegram orqali yozing.',
+    button: 'Telegram orqali yozish',
+  },
+
   footer: {
     rights: 'Barcha huquqlar himoyalangan.',
     sections: 'Bo‘limlar',
@@ -280,6 +286,8 @@ const uz = {
     heroText: 'Bosh sahifa matni',
     aboutText: '“Platforma haqida” sahifasi matni',
     contactEmail: 'Aloqa uchun email',
+    telegramUrl: 'Telegram havolasi (taklif va shikoyatlar)',
+    telegramHint: 'Masalan: https://t.me/username yoki @username. Bo‘sh qoldirilsa, tugma saytda ko‘rinmaydi.',
     contactPhone: 'Telefon',
     schoolName: 'Muassasa nomi',
     footerText: 'Pastki qism matni',
@@ -446,6 +454,12 @@ const ru = {
     contact: 'Контакты',
   },
 
+  feedback: {
+    title: 'Предложения и жалобы',
+    text: 'Если у вас есть отзыв, предложение или жалоба по платформе, напишите нам в Telegram.',
+    button: 'Написать в Telegram',
+  },
+
   footer: {
     rights: 'Все права защищены.',
     sections: 'Разделы',
@@ -570,6 +584,8 @@ const ru = {
     heroText: 'Текст главной страницы',
     aboutText: 'Текст страницы «О платформе»',
     contactEmail: 'Email для связи',
+    telegramUrl: 'Ссылка Telegram (предложения и жалобы)',
+    telegramHint: 'Например: https://t.me/username или @username. Если поле пустое, кнопка на сайте не показывается.',
     contactPhone: 'Телефон',
     schoolName: 'Название учреждения',
     footerText: 'Текст в подвале',
@@ -736,6 +752,12 @@ const en = {
     contact: 'Contact',
   },
 
+  feedback: {
+    title: 'Suggestions & complaints',
+    text: 'Have feedback, a suggestion or a complaint about the platform? Message us on Telegram.',
+    button: 'Message on Telegram',
+  },
+
   footer: {
     rights: 'All rights reserved.',
     sections: 'Sections',
@@ -860,6 +882,8 @@ const en = {
     heroText: 'Home page text',
     aboutText: '“About” page text',
     contactEmail: 'Contact email',
+    telegramUrl: 'Telegram link (suggestions & complaints)',
+    telegramHint: 'For example: https://t.me/username or @username. Leave empty to hide the button.',
     contactPhone: 'Phone',
     schoolName: 'Institution name',
     footerText: 'Footer text',

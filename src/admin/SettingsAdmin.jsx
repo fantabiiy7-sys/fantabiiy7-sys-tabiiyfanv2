@@ -5,6 +5,7 @@ import { useToast } from '../context/ToastContext';
 import { useSettings } from '../context/SettingsContext';
 import { getSettings, saveSettings } from '../lib/api';
 import { LANGS } from '../i18n/translations';
+import { telegramHref } from '../lib/utils';
 import { Spinner } from '../components/States';
 import { Field } from './FormParts';
 
@@ -20,6 +21,7 @@ const LOCALIZED = [
 const PLAIN = [
   { key: 'contactEmail', type: 'email' },
   { key: 'contactPhone', type: 'tel' },
+  { key: 'telegramUrl', type: 'text', placeholder: 'https://t.me/…', hint: 'telegramHint', wide: true },
 ];
 
 export default function SettingsAdmin() {
@@ -46,6 +48,10 @@ export default function SettingsAdmin() {
 
   async function submit(e) {
     e.preventDefault();
+    if (data.telegramUrl && data.telegramUrl.trim() && !telegramHref(data.telegramUrl)) {
+      toast(`${t('admin.telegramUrl')}: ${t('admin.telegramHint')}`, 'error');
+      return;
+    }
     setSaving(true);
     try {
       await saveSettings(data);
@@ -92,9 +98,16 @@ export default function SettingsAdmin() {
       <div className="card form-card">
         <div className="form-grid two">
           {PLAIN.map((f) => (
-            <Field key={f.key} label={t(`admin.${f.key}`)}>
-              <input type={f.type} value={data[f.key] || ''} onChange={(e) => setData((d) => ({ ...d, [f.key]: e.target.value }))} />
-            </Field>
+            <div key={f.key} style={f.wide ? { gridColumn: '1 / -1' } : undefined}>
+              <Field label={t(`admin.${f.key}`)} hint={f.hint ? t(`admin.${f.hint}`) : undefined}>
+                <input
+                  type={f.type}
+                  placeholder={f.placeholder}
+                  value={data[f.key] || ''}
+                  onChange={(e) => setData((d) => ({ ...d, [f.key]: e.target.value }))}
+                />
+              </Field>
+            </div>
           ))}
         </div>
       </div>

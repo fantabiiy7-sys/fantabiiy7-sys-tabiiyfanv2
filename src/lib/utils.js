@@ -104,3 +104,14 @@ window.addEventListener('error', function (e) {
   const i = head.lastIndexOf('__OFFSET__');
   return head.slice(0, i) + offset + head.slice(i + 10) + safeJs + '</script>\n</body></html>';
 }
+
+/** Telegram havolasini to'g'rilaydi: "@user", "t.me/user" yoki to'liq URL */
+export function telegramHref(value) {
+  const v = String(value || '').trim();
+  if (!v) return '';
+  if (v.startsWith('@')) return `https://t.me/${v.slice(1)}`;
+  if (/^(https?:\/\/)?(t\.me|telegram\.me)\//i.test(v)) return v.startsWith('http') ? v : `https://${v}`;
+  if (/^https?:\/\//i.test(v)) return v;
+  if (/^[A-Za-z0-9_]{4,}$/.test(v)) return `https://t.me/${v}`;
+  return '';
+}

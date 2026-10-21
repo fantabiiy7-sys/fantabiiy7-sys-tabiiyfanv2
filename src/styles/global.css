@@ -2683,3 +2683,51 @@ select:disabled {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+
+/* Taklif va shikoyatlar (Telegram) */
+.feedback-fab {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px 12px 14px;
+  border-radius: 999px;
+  background: #229ed9;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: 0 10px 24px -8px rgba(34, 158, 217, 0.7);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.feedback-fab:hover {
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -8px rgba(34, 158, 217, 0.8);
+}
+.feedback-card {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 24px;
+  margin-top: 20px;
+}
+.feedback-card p {
+  margin: 0 0 14px;
+}
+@media (max-width: 640px) {
+  .feedback-fab {
+    left: 14px;
+    bottom: 14px;
+    padding: 13px;
+  }
+  .feedback-fab span {
+    display: none;
+  }
+  .feedback-card {
+    flex-direction: column;
+    padding: 18px;
+  }
+}

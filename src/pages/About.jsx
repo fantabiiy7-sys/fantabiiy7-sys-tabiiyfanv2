@@ -2,6 +2,7 @@ import { Info, CheckCircle2, Mail, Phone, School } from 'lucide-react';
 import { useI18n } from '../context/I18nContext';
 import { useSetting } from '../context/SettingsContext';
 import { PageHeader } from '../components/PageHeader';
+import { FeedbackCard } from '../components/Feedback';
 
 export default function About() {
   const { t } = useI18n();
@@ -46,6 +47,7 @@ export default function About() {
           </>
         )}
       </div>
+      <FeedbackCard />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Menu, X, Sun, Moon, Globe, ChevronDown, ShieldCheck, Leaf, Home, Info, Mail, Phone } from 'lucide-react';
+import { Menu, X, Sun, Moon, Globe, ChevronDown, ShieldCheck, Leaf, Home, Info, Mail, Phone, Send } from 'lucide-react';
 import { useI18n } from '../context/I18nContext';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
@@ -8,6 +8,7 @@ import { useSetting } from '../context/SettingsContext';
 import { SECTIONS } from '../lib/constants';
 import { LANGS } from '../i18n/translations';
 import { ConfigNotice } from './States';
+import { FeedbackFab, useTelegramLink } from './Feedback';
 
 const MATERIAL_SECTIONS = SECTIONS.filter((s) => s.table === 'materials');
 const OTHER_SECTIONS = SECTIONS.filter((s) => s.table !== 'materials');
@@ -184,6 +185,7 @@ function Footer() {
   const year = new Date().getFullYear();
   const email = setting('contactEmail');
   const phone = setting('contactPhone');
+  const telegram = useTelegramLink();
   return (
     <footer className="site-footer">
       <div className="container footer-grid">
@@ -222,6 +224,13 @@ function Footer() {
                 </a>
               </li>
             )}
+            {telegram && (
+              <li>
+                <a href={telegram} target="_blank" rel="noreferrer">
+                  <Send size={14} /> {t('feedback.title')}
+                </a>
+              </li>
+            )}
             <li>
               <Link to="/admin">{t('nav.admin')}</Link>
             </li>
@@ -248,6 +257,7 @@ export function PublicLayout() {
         <Outlet />
       </main>
       <Footer />
+      <FeedbackFab />
     </div>
   );
 }
