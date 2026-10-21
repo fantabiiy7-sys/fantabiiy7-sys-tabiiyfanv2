@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Inbox, AlertTriangle, Plus, PlugZap, Loader2 } from 'lucide-react';
 import { useI18n } from '../context/I18nContext';
 import { isConfigured } from '../lib/supabase';
+import { useAuth } from '../context/AuthContext';
 
 export function Spinner({ label }) {
   const { t } = useI18n();
@@ -37,6 +38,8 @@ export function ErrorBox({ error, onRetry }) {
  */
 export function EmptyState({ title, text, addTo, icon: Icon = Inbox, filtered }) {
   const { t } = useI18n();
+  const { isAdmin } = useAuth();
+  const href = addTo && (isAdmin ? addTo : `/admin/login?next=${encodeURIComponent(addTo)}`);
   return (
     <div className="empty">
       <div className="empty-art" aria-hidden="true">
@@ -46,7 +49,7 @@ export function EmptyState({ title, text, addTo, icon: Icon = Inbox, filtered })
       <h3>{title || (filtered ? t('empty.filtered') : t('empty.title'))}</h3>
       <p className="muted">{text || (filtered ? t('empty.filteredText') : t('empty.text'))}</p>
       {addTo && !filtered && (
-        <Link to={addTo} className="btn btn-primary">
+        <Link to={href} className="btn btn-primary">
           <Plus size={18} /> {t('empty.add')}
         </Link>
       )}

@@ -18,13 +18,21 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (!supabase) return;
     let active = true;
+    // Tarmoq yoki brauzer muammosida yuklanish cheksiz davom etmasin
+    const guard = setTimeout(() => active && setLoading(false), 6000);
 
-    supabase.auth.getSession().then(async ({ data }) => {
-      if (!active) return;
-      setSession(data.session);
-      setIsAdmin(data.session ? await fetchIsAdmin() : false);
-      setLoading(false);
-    });
+    supabase.auth
+      .getSession()
+      .then(async ({ data }) => {
+        if (!active) return;
+        setSession(data.session);
+        setIsAdmin(data.session ? await fetchIsAdmin() : false);
+      })
+      .catch(() => {})
+      .finally(() => {
+        clearTimeout(guard);
+        if (active) setLoading(false);
+      });
 
     const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
       setSession(s);
@@ -37,6 +45,7 @@ export function AuthProvider({ children }) {
 
     return () => {
       active = false;
+      clearTimeout(guard);
       sub.subscription.unsubscribe();
     };
   }, []);
