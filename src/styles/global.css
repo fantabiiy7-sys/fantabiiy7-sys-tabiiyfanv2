@@ -2671,3 +2671,15 @@ select:disabled {
   gap: 10px;
   flex-wrap: wrap;
 }
+.crash-stack {
+  max-height: 260px;
+  overflow: auto;
+  margin: -6px 0 18px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--bg-soft);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
